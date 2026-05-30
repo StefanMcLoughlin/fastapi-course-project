@@ -28,18 +28,6 @@ while True:
         print("Error:", error)
         time.sleep(2)
 
-my_posts = [{"title": "title of post 1", "content": "content of post 1", "id": 1}, {"title": "favorite foods", "content": "I like pizza", "id": 2}]
-
-
-def find_post(id):
-    for p in my_posts:
-        if p["id"] == id:
-            return p
-        
-def find_index_post(id):
-    for i, p in enumerate(my_posts):
-        if p["id"] == id:
-            return i
 
 @app.get("/")
 def root():
@@ -60,7 +48,7 @@ def create_posts(post: Post):
 
 @app.get("/posts/{id}")
 def get_post(id: int):
-    cursor.execute("""SELECT * FROM posts WHERE id = %s """, (str(id)))
+    cursor.execute("""SELECT * FROM posts WHERE id = %s """, (id,))
     post= cursor.fetchone()
     conn.commit()
     if not post:
@@ -69,7 +57,7 @@ def get_post(id: int):
 
 @app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id: int):
-    cursor.execute("""DELETE FROM posts WHERE id = %s RETURNING * """, (str(id)))
+    cursor.execute("""DELETE FROM posts WHERE id = %s RETURNING * """, (id,))
     deleted_post = cursor.fetchone()
     conn.commit()
     if deleted_post == None:
