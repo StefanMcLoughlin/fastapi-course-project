@@ -49,15 +49,14 @@ def root():
 def get_posts():
     cursor.execute("""SELECT * FROM posts""")
     posts = cursor.fetchall()
-    print(posts)
-    return {"data": my_posts}
+    return {"data": posts}
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
 def create_posts(post: Post):
-    post_dict = post.model_dump()
-    post_dict["id"] = randrange(0, 1000000)
-    my_posts.append(post_dict)
-    return {"data": post_dict}
+    cursor.execute("""INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * """, (post.title, post.content, post.published))
+    new_post = cursor.fetchone()
+    conn.commit()
+    return {"data": new_post}
 
 @app.get("/posts/{id}")
 def get_post(id: int):
@@ -83,5 +82,3 @@ def update_post(id: int, post: Post):
     post_dict["id"] = id
     my_posts[index] = post_dict
     return {"data": post_dict}
-
-# stopped 2:24:00, starting with Databases
