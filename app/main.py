@@ -9,20 +9,13 @@ from sqlalchemy.orm import Session
 import os
 from dotenv import load_dotenv
 from . import models
-from .database import engine, SessionLocal
+from .database import engine, get_db
 
 models.Base.metadata.create_all(bind=engine)
 
 load_dotenv()
 app = FastAPI()
 
-#Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 class Post(BaseModel):
     title: str
