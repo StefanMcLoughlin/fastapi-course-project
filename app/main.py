@@ -72,3 +72,5 @@ def update_post(id: int, post: Post):
     if updated_post == None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id {id} does not exist.")
     return {"data": updated_post}
+
+#stopped 4:37:50 starting with SQLAlchemy
