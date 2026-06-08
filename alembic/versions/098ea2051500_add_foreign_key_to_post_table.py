@@ -1,0 +1,30 @@
+"""Add Foreign-Key to post table
+
+Revision ID: 098ea2051500
+Revises: 0e05c6925099
+Create Date: 2026-06-08 11:04:16.245067
+
+"""
+from typing import Sequence, Union
+
+from alembic import op
+import sqlalchemy as sa
+
+
+# revision identifiers, used by Alembic.
+revision: str = '098ea2051500'
+down_revision: Union[str, Sequence[str], None] = '0e05c6925099'
+branch_labels: Union[str, Sequence[str], None] = None
+depends_on: Union[str, Sequence[str], None] = None
+
+
+def upgrade():
+    op.add_column("posts", sa.Column("owner_id", sa.Integer(), nullable=False))
+    op.create_foreign_key("posts_users_fk", source_table="posts", referent_table="users", local_cols=["owner_id"], remote_cols=["id"], ondelete="CASCADE")
+    pass
+
+
+def downgrade():
+    op.drop_constraint("posts_users_fk", table_name="posts")
+    op.drop_column("posts", "owner_id")
+    pass
