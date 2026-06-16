@@ -48,9 +48,11 @@ def test_user(client):
     new_user["password"] = user_data["password"]
     return new_user
 
+
 @pytest.fixture
 def token(test_user):
     return create_access_token({"user_id": test_user["id"]})
+
 
 @pytest.fixture
 def authorized_client(client, token):
@@ -59,3 +61,32 @@ def authorized_client(client, token):
         "Authorization": f"Bearer {token}"
     }
     return client
+
+
+@pytest.fixture
+def test_posts(test_user, session):
+    posts_data = [{
+        "title": "first title",
+        "content": "first content",
+        "owner_id": test_user["id"]
+    }, {
+        "title": "2nd title",
+        "content": "2nd content",
+        "owner_id": test_user["id"]
+    }, {
+        "title": "3rd title",
+        "content": "3rd content",
+        "owner_id": test_user["id"]
+    }]
+
+    def create_post_model(post):
+        return models.Post(**post)
+
+
+    post_map = map(create_post_model, posts_data)
+    posts = list(post_map)
+
+    session.add_all(posts)
+    session.commit()
+    posts = session.query(models.Post).all()
+    return posts
