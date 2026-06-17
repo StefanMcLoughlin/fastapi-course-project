@@ -1,136 +1,268 @@
 # FastAPI Kursprojekt
 
-## Überblick
+Status: Abgeschlossenes Ausbildungsprojekt – Fokus auf Backend-Entwicklung mit FastAPI, PostgreSQL, SQLAlchemy, JWT-Authentifizierung und automatisierten Tests.
 
-Dieses Projekt wurde im Rahmen eines FastAPI-Backend-Kurses entwickelt und dient als praktische Lernanwendung für moderne Backend- und API-Entwicklung mit Python.
+Dieses Projekt wurde im Rahmen meiner Ausbildung zum Backend- und AI-Entwickler erstellt.
 
-Das Projekt hat sich von einer einfachen CRUD-API zu einer vollständigen Backend-Anwendung mit Datenbankanbindung, Benutzerverwaltung und JWT-Authentifizierung entwickelt.
-
-## Funktionen
-
-### Beiträge (Posts)
-
-* Beiträge erstellen
-* Alle Beiträge abrufen
-* Einzelne Beiträge abrufen
-* Beiträge aktualisieren
-* Beiträge löschen
-
-### Benutzerverwaltung
-
-* Benutzer registrieren
-* Benutzerdaten abrufen
-* Sichere Speicherung von Passwörtern durch Hashing
-* Passwörter werden niemals über die API zurückgegeben
-
-### Authentifizierung
-
-* Benutzer-Login
-* Erstellung von JWT Access Tokens
-* Token-Validierung
-* Geschützte Endpunkte über OAuth2
-* Authentifizierung über Dependency Injection
+Ziel war es, moderne Backend-Entwicklung mit Python, FastAPI, PostgreSQL und SQLAlchemy praxisnah zu erlernen und dabei professionelle Entwicklungsprozesse wie Datenbankmigrationen, Authentifizierung und automatisierte Tests umzusetzen.
 
 ---
 
-## Verwendete Technologien
+# Funktionen
 
-### Backend
+## Benutzerverwaltung
+
+* Benutzerregistrierung
+* Passwort-Hashing mit bcrypt
+* Benutzer-Login
+* JWT-Authentifizierung
+* OAuth2 Password Flow
+
+## Authentifizierung & Autorisierung
+
+* Geschützte Endpunkte
+* JWT Access Tokens
+* Benutzer können nur ihre eigenen Beiträge bearbeiten oder löschen
+* Rollenbasierte Zugriffskontrolle über Owner-Prüfungen
+
+## Posts
+
+* Beitrag erstellen
+* Alle Beiträge abrufen
+* Einzelnen Beitrag abrufen
+* Beitrag aktualisieren
+* Beitrag löschen
+* Pagination (Limit & Offset)
+* Suchfunktion über Titel
+
+## Voting-System
+
+* Beiträge liken/voten
+* Votes entfernen
+* Doppelte Votes verhindern
+* Composite Primary Keys
+* Foreign-Key-Beziehungen
+
+---
+
+# Datenbank
+
+Verwendete Technologien:
+
+* PostgreSQL
+* SQLAlchemy ORM
+* Relationale Datenbanken
+* Foreign Keys
+* Relationships
+* Dependency Injection für Datenbank-Sessions
+
+---
+
+# Datenbank-Migrationen
+
+Für Versionsverwaltung der Datenbankstruktur wurde Alembic verwendet.
+
+Funktionen:
+
+* Migrationen erstellen
+* Datenbankschema versionieren
+* Upgrades
+* Downgrades
+* Nachvollziehbare Datenbankänderungen
+
+---
+
+# Testing
+
+Das Projekt enthält automatisierte Tests mit pytest.
+
+Getestete Bereiche:
+
+* Benutzerregistrierung
+* Login
+* JWT Tokens
+* Authentifizierung
+* Autorisierung
+* CRUD-Funktionen
+* Voting-System
+
+Verwendete Konzepte:
+
+* FastAPI TestClient
+* Fixtures
+* Dependency Overrides
+* Separate Testdatenbank
+* Parametrized Tests
+
+---
+
+# Verwendete Technologien
+
+## Backend
 
 * Python
 * FastAPI
-* SQLAlchemy ORM
+* Uvicorn
+
+## Datenbank
+
 * PostgreSQL
+* SQLAlchemy
+* Alembic
 
-### Sicherheit
+## Authentifizierung
 
-* JWT (JSON Web Tokens)
-* OAuth2 Password Flow
-* bcrypt
-* Passlib
+* JWT
+* OAuth2
+* Passlib (bcrypt)
 
-### Datenvalidierung
+## Testing
 
-* Pydantic v2
+* pytest
+* FastAPI TestClient
 
-### Entwicklungstools
+## Entwicklung
 
-* Postman
-* pgAdmin 4
 * Git
 * GitHub
+* Postman
+* pgAdmin
 
 ---
 
-## Projektstruktur
+# Projektstruktur
 
 ```text
 app/
 ├── routers/
 │   ├── post.py
 │   ├── user.py
-│   └── auth.py
+│   ├── auth.py
+│   └── vote.py
 │
 ├── database.py
 ├── models.py
 ├── schemas.py
 ├── oauth2.py
+├── config.py
 ├── utils.py
 └── main.py
+
+tests/
+├── conftest.py
+├── test_users.py
+├── test_posts.py
+└── test_votes.py
+
+alembic/
+└── versions/
 ```
 
 ---
 
-## Erlernte Konzepte
+# API-Endpunkte
 
-### Datenbanken
+## Benutzer
 
-* PostgreSQL Einrichtung und Verwaltung
-* SQL-Grundlagen
+```http
+POST /users/
+POST /login
+```
+
+## Posts
+
+```http
+GET    /posts/
+GET    /posts/{id}
+POST   /posts/
+PUT    /posts/{id}
+DELETE /posts/{id}
+```
+
+## Votes
+
+```http
+POST /vote/
+```
+
+---
+
+# Projekt starten
+
+## Virtuelle Umgebung erstellen
+
+```bash
+python -m venv .venv
+```
+
+## Virtuelle Umgebung aktivieren
+
+```bash
+# Windows
+.venv\Scripts\activate
+
+# Linux / macOS
+source .venv/bin/activate
+```
+
+## Abhängigkeiten installieren
+
+```bash
+pip install -r requirements.txt
+```
+
+## FastAPI starten
+
+```bash
+uvicorn app.main:app --reload
+```
+
+---
+
+# Tests ausführen
+
+```bash
+pytest
+```
+
+---
+
+# Was ich in diesem Projekt gelernt habe
+
+* Entwicklung moderner REST APIs
+* FastAPI Framework
+* PostgreSQL
 * SQLAlchemy ORM
-* Datenbanksitzungen (Sessions)
-* Dependency Injection
-
-### API-Entwicklung
-
-* CRUD-Operationen
-* Request- und Response-Modelle
-* Datenvalidierung
-* Fehlerbehandlung
-* Strukturierung mit APIRoutern
-
-### Sicherheit
-
-* Passwort-Hashing
-* JWT-Authentifizierung
+* JWT Authentifizierung
 * OAuth2
-* Geschützte API-Endpunkte
-* Nutzung von Umgebungsvariablen (.env)
+* Autorisierung über Owner-Prüfungen
+* Alembic Migrationen
+* pytest
+* Testdatenbanken
+* Git & GitHub Workflows
+* Strukturierung größerer Backend-Projekte
 
 ---
 
-## Nächste Schritte
+# Nächste Schritte
 
-* Datenbank-Migrationen mit Alembic
-* Beziehungen zwischen Datenbanktabellen
-* Erweiterte Benutzerberechtigungen
-* Refresh Tokens
-* Rollen- und Rechteverwaltung
-* Docker Deployment
+Geplante Erweiterungen und Lernziele:
+
+* Docker
 * CI/CD Pipelines
+* GitHub Actions
+* Deployment auf Linux-Servern
+* NGINX
+* Cloud Deployment
+* Eigene produktionsreife Backend-Projekte
 
 ---
 
-## Lernziel
+# Autor
 
-Dieses Repository dokumentiert meinen Lernfortschritt im Bereich moderner Backend-Entwicklung mit Python.
+**Stefan McLoughlin**
 
-Der Fokus liegt auf dem Verständnis von:
+Backend Development • AI Engineering • Automation
 
-* API-Architekturen
-* Datenbankintegration
-* Authentifizierung und Autorisierung
-* Backend-Sicherheit
-* Best Practices für Python-Webanwendungen
-
-Das Projekt ist Teil meines Weges zum Python Backend Developer bzw. AI Engineer.
+GitHub:
+https://github.com/StefanMcLoughlin
